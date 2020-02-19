@@ -9,6 +9,8 @@ dfNoNan = dfNoNan.set_index('Country Code')
 del dfNoNan['Country Name']
 del dfNoNan['Series Code']
 del dfNoNan['Series Name']
+dfNoNan.columns = [x[:4] for x in dfNoNan.columns]
+dfNoNan.columns = pd.to_datetime(dfNoNan.columns)
 
 dfNoNan = dfNoNan.astype('float')
 italySeries = dfNoNan.loc['ITA']
@@ -17,9 +19,10 @@ italySeries.plot()
 plt.title('% popolazione urbana in Italia')
 plt.xlabel('Anni')
 plt.ylabel('%')
+#plt.ylim(bottom=0, top=100)
 
-dfCompare = dfNoNan[['1990 [YR1990]', '2018 [YR2018]']]
-dfCompare = dfCompare.rename(index={0: 'YR1990', 1: 'YR2018'})
+dfCompare = dfNoNan.iloc[:,[0,-2]]
+
 dfCompare.plot.hist(bins=8, alpha=.5)
 
 plt.title('Raffronto popolazione urbana mondiale')
